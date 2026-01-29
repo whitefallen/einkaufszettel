@@ -349,9 +349,9 @@ main {
   opacity: 0.5;  /* Further visual recession */
 }
 
-/* Delete button - Progressive disclosure (appears on hover) */
+/* Delete button - Always visible but subtle, more prominent on hover */
 .shopping-item button {
-  opacity: 0;
+  opacity: 0.3;  /* Subtly visible by default */
   background: none;
   border: none;
   color: var(--text-tertiary);
@@ -362,12 +362,11 @@ main {
   cursor: pointer;
   transition: opacity var(--transition-medium), 
               color var(--transition-medium);  /* Explicit properties */
-  pointer-events: none;
+  pointer-events: all;  /* Always clickable */
 }
 
 .shopping-item:hover button {
-  opacity: 1;
-  pointer-events: all;
+  opacity: 1;  /* More prominent on hover */
 }
 
 .shopping-item button:hover {
