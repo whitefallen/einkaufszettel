@@ -236,7 +236,7 @@ main {
   opacity: 0.6;
 }
 
-/* LIST ITEMS - Tap to check/uncheck, swipe for actions */
+/* LIST ITEMS - Tap to check/uncheck */
 .shopping-item {
   position: relative;
   padding: var(--space-md) 0;
@@ -445,14 +445,6 @@ footer button:first-child:hover {
 #lists-container li.active button {
   color: var(--accent-brass);
   background: var(--accent-brass-subtle);
-}
-
-/* Item count - low contrast */
-#lists-container li button::after {
-  content: attr(data-count);
-  font-size: 0.875rem;
-  color: var(--text-tertiary);
-  opacity: 0.5;
 }
 
 /* Action buttons in list items */

@@ -150,6 +150,8 @@ export class UIManager {
     li.addEventListener('click', (e) => {
       if (e.target !== deleteButton) {
         getStateManager().toggleItem(item.id);
+        // Update checkbox for accessibility
+        checkbox.checked = !checkbox.checked;
       }
     });
     
