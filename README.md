@@ -1,9 +1,10 @@
 # Einkaufszettel - Android-first PWA Shopping List
 
-A privacy-focused, offline-first shopping list Progressive Web App built with CRDT-based state management and end-to-end encryption.
+A privacy-focused, offline-first shopping list Progressive Web App built with CRDT-based state management, end-to-end encryption, and **Material Design UI**.
 
 ## Features
 
+✅ **Material Design UI**: Beautiful, responsive interface optimized for CRDT systems  
 ✅ **Offline-First Architecture**: Works without internet connection using IndexedDB  
 ✅ **CRDT State Management**: Conflict-free synchronization using Yjs  
 ✅ **End-to-End Encryption**: All data encrypted with TweetNaCl  
@@ -13,6 +14,7 @@ A privacy-focused, offline-first shopping list Progressive Web App built with CR
 ✅ **Event-Based Sync**: Real-time updates without polling  
 ✅ **Android PWA Support**: Web Push notifications and Background Sync  
 ✅ **Battery Efficient**: Optimized for mobile battery life  
+✅ **GitHub Actions**: Automated CI/CD and deployment  
 
 ## Architecture
 
@@ -26,12 +28,14 @@ A privacy-focused, offline-first shopping list Progressive Web App built with CR
 
 ### Technology Stack
 
-- **Frontend**: TypeScript, Vite
+- **Frontend**: TypeScript, Vite, Material Design
 - **State Management**: Yjs (CRDT)
 - **Storage**: IndexedDB (via idb)
 - **Encryption**: TweetNaCl
 - **Server**: Node.js + WebSocket (minimal relay)
 - **PWA**: Service Workers, Web Push, Background Sync
+- **UI/UX**: Material Design principles, Roboto font
+- **CI/CD**: GitHub Actions
 
 ## Project Structure
 
@@ -44,15 +48,21 @@ einkaufszettel/
 │   ├── crypto.ts        # End-to-end encryption (TweetNaCl)
 │   ├── sync.ts          # Network synchronization
 │   ├── ui.ts            # UI rendering and events
-│   └── styles.css       # Application styles
+│   └── styles.css       # Material Design styles
 ├── server/
 │   ├── index.js         # Minimal relay server
 │   └── package.json     # Server dependencies
+├── .github/
+│   └── workflows/       # GitHub Actions CI/CD
+│       ├── ci.yml       # Continuous Integration
+│       └── deploy-client.yml  # GitHub Pages deployment
 ├── public/
 │   └── sw.js            # Service Worker for offline support
 ├── index.html           # HTML entry point
 ├── vite.config.ts       # Vite build configuration
 ├── tsconfig.json        # TypeScript configuration
+├── MATERIAL_DESIGN_CRDT.md  # Material Design guide
+├── DEPLOYMENT.md        # Deployment guide
 └── package.json         # Project dependencies
 ```
 
@@ -104,32 +114,35 @@ npm run build
 
 The built files will be in the `dist/` directory.
 
-### Deploying the Relay Server
+### Deploying the Application
 
-The relay server is a simple WebSocket server that can be deployed to any Node.js hosting:
+See the comprehensive [DEPLOYMENT.md](DEPLOYMENT.md) guide for detailed deployment instructions.
 
-```bash
-cd server
-PORT=3000 node index.js
-```
+**Quick Deploy to GitHub Pages**:
 
-**Production Deployment**:
+1. Enable GitHub Pages in repository settings (Source: GitHub Actions)
+2. Push to main branch - automatic deployment via GitHub Actions
+3. App available at `https://<username>.github.io/<repo-name>/`
 
-1. Deploy the server to your hosting provider (Railway, Render, Fly.io)
-2. Note your server's WebSocket URL (e.g., `wss://your-server.com`)
-3. Update the client configuration:
+**Deploy the Relay Server**:
 
-```bash
-# In the project root, create or edit .env
-echo "VITE_WS_URL=wss://your-server.com" > .env
-```
+See [DEPLOYMENT.md](DEPLOYMENT.md) for hosting options (Railway, Render, Fly.io, etc.)
 
-4. Rebuild the client:
-```bash
-npm run build
-```
+## Material Design UI
 
-The client will now connect to your production WebSocket server.
+The application features a beautiful **Material Design** interface optimized for CRDT-based systems.
+
+### Key Features
+
+- **Material Elevation**: 6-level shadow system for depth and hierarchy
+- **Material Colors**: Blue primary, green secondary, semantic state colors
+- **Floating Action Button (FAB)**: Green circular button for adding items
+- **Material Cards**: Each item in an elevated card with smooth animations
+- **Roboto Typography**: Material Design's default font
+- **Smooth Transitions**: 150ms-350ms animations for all interactions
+- **CRDT-Optimized**: Visual feedback for sync states, optimistic updates
+
+See [MATERIAL_DESIGN_CRDT.md](MATERIAL_DESIGN_CRDT.md) for design principles and CRDT-specific patterns.
 
 ## Usage
 
