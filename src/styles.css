@@ -12,57 +12,69 @@
 }
 
 :root {
-  /* COLOR & MATERIAL (DARK MODE FIRST) */
-  /* Backgrounds: near-black and deep charcoal (not pure black) */
-  --bg-base: #0A0A0A;
-  --bg-elevated: #121212;
-  --bg-surface: #1A1A1A;
-  --bg-hover: #222222;
+  /* DARK MATERIAL SYSTEM (MANDATORY) */
+  /* Three distinct darkness layers with clear luminance differences */
+  --bg-canvas: #060608;        /* App canvas (near-black, darkest) */
+  --bg-surface: #131316;       /* Content surface (slightly lighter, clearly elevated) */
+  --bg-active: #1C1C20;        /* Active row surface (clearly elevated from surface) */
+  --bg-hover: #252529;         /* Hover state (even more elevated) */
   
   /* Typography: soft gray and warm off-white (not pure white) */
-  --text-primary: #E8E6E3;
-  --text-secondary: #9B9B9B;
-  --text-tertiary: #6B6B6B;
-  --text-disabled: #4A4A4A;
+  /* Hierarchy created through luminance, not just size */
+  --text-dominant: #F2F1EE;    /* List titles - visually dominant */
+  --text-primary: #D8D7D4;     /* Items - subordinate to titles */
+  --text-secondary: #9B9B9B;   /* Secondary text - quieter */
+  --text-tertiary: #6B6B6B;    /* Tertiary text - recedes */
+  --text-disabled: #4A4A4A;    /* Disabled - barely visible */
   
   /* Accent: muted brass, used sparingly (<5%) */
   --accent-brass: #A6936F;
   --accent-brass-dim: #8B7A5E;
-  --accent-brass-subtle: rgba(166, 147, 111, 0.15);
+  --accent-brass-subtle: rgba(166, 147, 111, 0.12);
   
-  /* No borders; separation via spacing, opacity, and subtle shadow */
-  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.6);
-  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.7);
-  --shadow-strong: 0 8px 24px rgba(0, 0, 0, 0.8);
+  /* Depth via soft elevation and luminance shifts, never borders */
+  /* Shadows create material elevation, not decoration */
+  --shadow-surface: 0 2px 8px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.9);
+  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.85), 0 2px 4px rgba(0, 0, 0, 0.95);
+  --shadow-active: 0 6px 24px rgba(0, 0, 0, 0.9), 0 3px 6px rgba(0, 0, 0, 1.0);
+  --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.95), 0 4px 8px rgba(0, 0, 0, 1.0);
   
-  /* TYPOGRAPHY */
-  /* Large, elegant list titles (serif) */
+  /* TYPOGRAPHY - Editorial Authority */
+  /* Large, elegant list titles (serif) - visually dominant */
   --font-serif: 'Playfair Display', Georgia, serif;
-  /* Neutral sans-serif for items and UI */
+  /* Neutral sans-serif for items and UI - subordinate and quiet */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   
-  /* Regular weight only; hierarchy via size and spacing */
+  /* Regular weight only; hierarchy via size, spacing, and luminance */
+  /* No bold UI text - authority through typography */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   
-  /* Increased line height for calm scanning */
-  --line-height-tight: 1.3;
-  --line-height-normal: 1.6;
-  --line-height-relaxed: 1.8;
+  /* Letter spacing and line height intentionally adjusted */
+  /* Typography must create hierarchy even if color is removed */
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.65;
+  --line-height-relaxed: 1.85;
+  --letter-spacing-tight: -0.03em;
+  --letter-spacing-normal: -0.01em;
+  --letter-spacing-relaxed: 0.01em;
   
-  /* MOTION */
-  /* Slow, predictable animations (300–400ms) */
-  /* Ease-out curves only */
-  --transition-slow: 350ms cubic-bezier(0.2, 0.0, 0, 1.0);
-  --transition-medium: 300ms cubic-bezier(0.2, 0.0, 0, 1.0);
+  /* MOTION - Slow, Predictable, Settling */
+  /* Motion must be slow, predictable, and settling */
+  /* Reinforces depth and finality */
+  /* No bounce, no elastic effects */
+  --transition-slow: 400ms cubic-bezier(0.16, 0.0, 0.2, 1.0);
+  --transition-medium: 350ms cubic-bezier(0.16, 0.0, 0.2, 1.0);
+  --transition-fast: 300ms cubic-bezier(0.16, 0.0, 0.2, 1.0);
   
-  /* Spacing system - generous */
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 1.5rem;
-  --space-lg: 2.5rem;
-  --space-xl: 4rem;
-  --space-xxl: 6rem;
+  /* Spacing system - Vertical spacing should feel slightly excessive */
+  /* The layout must breathe - do not compress content to fill screen */
+  --space-xs: 0.625rem;   /* 10px */
+  --space-sm: 1.25rem;    /* 20px */
+  --space-md: 2rem;       /* 32px */
+  --space-lg: 3.5rem;     /* 56px */
+  --space-xl: 5rem;       /* 80px */
+  --space-xxl: 7rem;      /* 112px */
 }
 
 html {
@@ -75,22 +87,24 @@ body {
   font-family: var(--font-sans);
   font-weight: var(--font-weight-normal);
   line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
   color: var(--text-primary);
-  background: var(--bg-base);
+  background: var(--bg-canvas);  /* App canvas - darkest layer */
   overflow-x: hidden;
 }
 
-/* APP CONTAINER */
+/* APP CONTAINER - Content surface (elevated from canvas) */
 #app {
   min-height: 100vh;
   max-width: 640px;
   margin: 0 auto;
-  background: var(--bg-elevated);
+  background: var(--bg-surface);  /* Content surface - clearly lighter than canvas */
+  box-shadow: var(--shadow-surface);  /* Soft elevation */
   display: flex;
   flex-direction: column;
 }
 
-/* HEADER - Minimal, restrained */
+/* HEADER - Minimal, Editorial Authority */
 header {
   position: relative;
   padding: var(--space-lg) var(--space-md) var(--space-md);
@@ -98,15 +112,16 @@ header {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
+  background: var(--bg-surface);  /* Same as content surface */
 }
 
 header h1 {
   font-family: var(--font-serif);
   font-weight: var(--font-weight-normal);
-  font-size: 2rem;
-  letter-spacing: -0.02em;
+  font-size: 2.25rem;  /* Increased for dominance */
+  letter-spacing: var(--letter-spacing-tight);
   line-height: var(--line-height-tight);
-  color: var(--text-primary);
+  color: var(--text-dominant);  /* Brightest text - visually dominant */
   flex: 1;
   text-align: center;
 }
@@ -156,27 +171,37 @@ header h1 {
   opacity: 0.6;
 }
 
-/* MAIN CONTENT */
+/* MAIN CONTENT - Excessive vertical spacing (intentional) */
 main {
   flex: 1;
-  padding: 0 var(--space-md) var(--space-xl);
+  padding: 0 var(--space-md) var(--space-xxl);  /* Excessive bottom padding */
 }
 
-/* ADD ITEM FORM - Minimalist input */
+/* ADD ITEM FORM - Minimalist input on elevated surface */
 #add-item-form {
-  margin-bottom: var(--space-xl);
+  margin-bottom: var(--space-xl);  /* Excessive spacing */
   position: relative;
+  background: var(--bg-active);  /* Active row surface - clearly elevated */
+  padding: var(--space-md);
+  box-shadow: var(--shadow-elevated);  /* Soft elevation */
+  transition: box-shadow var(--transition-medium);
+}
+
+#add-item-form:focus-within {
+  box-shadow: var(--shadow-active);  /* More elevation on focus */
 }
 
 #item-input {
   width: 100%;
-  background: var(--bg-surface);
+  background: transparent;
   border: none;
-  border-bottom: 1px solid var(--text-disabled);
-  padding: var(--space-md) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);  /* Subtle separation */
+  padding: var(--space-sm) 0;
   font-family: var(--font-sans);
   font-size: 1.125rem;
   font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-relaxed);
   color: var(--text-primary);
   outline: none;
   transition: border-color var(--transition-medium);
@@ -184,6 +209,7 @@ main {
 
 #item-input::placeholder {
   color: var(--text-tertiary);
+  letter-spacing: var(--letter-spacing-relaxed);
 }
 
 #item-input:focus {
@@ -218,12 +244,12 @@ main {
   line-height: 1;
 }
 
-/* SHOPPING LIST - Vertical stack with generous spacing */
+/* SHOPPING LIST - Vertical stack with excessive spacing */
 #shopping-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: var(--space-sm);  /* Excessive vertical gaps */
 }
 
 #shopping-list:empty::before {
@@ -232,49 +258,67 @@ main {
   text-align: center;
   color: var(--text-tertiary);
   font-size: 1rem;
-  padding: var(--space-xxl) 0;
-  opacity: 0.6;
+  letter-spacing: var(--letter-spacing-relaxed);
+  padding: var(--space-xxl) 0;  /* Excessive padding */
+  opacity: 0.5;
 }
 
-/* LIST ITEMS - Tap to check/uncheck */
+/* LIST ITEMS - Rows must feel placed, not drawn */
+/* Active row surface - clearly elevated */
 .shopping-item {
   position: relative;
-  padding: var(--space-md) 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: var(--space-md) var(--space-md);  /* Generous padding */
+  background: var(--bg-active);  /* Active row surface - clearly elevated from content surface */
+  box-shadow: var(--shadow-elevated);  /* Material elevation */
   display: flex;
   align-items: center;
   gap: var(--space-md);
   cursor: pointer;
-  transition: opacity var(--transition-slow);
-}
-
-.shopping-item:last-child {
-  border-bottom: none;
+  transition: all var(--transition-slow);  /* Slow, settling motion */
 }
 
 .shopping-item:hover {
-  background: var(--bg-hover);
-  margin: 0 calc(-1 * var(--space-md));
-  padding-left: var(--space-md);
-  padding-right: var(--space-md);
+  background: var(--bg-hover);  /* Even more elevated */
+  box-shadow: var(--shadow-hover);  /* Stronger elevation on hover */
+  transform: translateY(-1px);  /* Subtle lift reinforces depth */
 }
 
-/* Item checkbox - invisible by default */
+/* Checked items recede visually AND spatially */
+.shopping-item.completed {
+  opacity: 0.4;  /* Recede visually */
+  background: var(--bg-surface);  /* Recede to lower layer */
+  box-shadow: none;  /* No elevation - settled back */
+  transform: translateY(2px);  /* Recede spatially - sink down */
+}
+
+.shopping-item.completed:hover {
+  opacity: 0.5;
+  background: var(--bg-active);
+  box-shadow: var(--shadow-surface);
+  transform: translateY(0);
+}
+
+.shopping-item:last-child {
+  /* No special treatment - all items have equal spacing */
+}
+
+/* Item checkbox - invisible by default (accessibility only) */
 .shopping-item input[type="checkbox"] {
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
+  pointer-events: none;
 }
 
-/* Custom checkbox indicator - subtle circle */
+/* Custom checkbox indicator - subtle circle, no decoration */
 .shopping-item::before {
   content: '';
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  border: 1px solid var(--text-disabled);
+  border: 1px solid rgba(255, 255, 255, 0.12);  /* Subtle, not prominent */
   flex-shrink: 0;
   transition: all var(--transition-medium);
 }
@@ -282,30 +326,34 @@ main {
 .shopping-item.completed::before {
   background: var(--accent-brass-subtle);
   border-color: var(--accent-brass-dim);
+  opacity: 0.6;  /* Recedes with completed item */
 }
 
-/* Item text */
+/* Item text - Subordinate and quiet (not dominant) */
 .shopping-item span {
   flex: 1;
-  font-size: 1.125rem;
-  color: var(--text-primary);
-  letter-spacing: 0.01em;
-  line-height: var(--line-height-relaxed);
+  font-size: 1.125rem;  /* Subordinate to list titles */
+  font-weight: var(--font-weight-normal);
+  color: var(--text-primary);  /* Subordinate luminance */
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-relaxed);  /* Calm scanning */
   transition: all var(--transition-slow);
 }
 
 .shopping-item.completed span {
-  color: var(--text-tertiary);
-  opacity: 0.5;
+  color: var(--text-tertiary);  /* Recedes in luminance */
+  opacity: 0.5;  /* Further visual recession */
 }
 
-/* Delete button - appears on hover/long-press */
+/* Delete button - Progressive disclosure (appears on hover) */
 .shopping-item button {
   opacity: 0;
   background: none;
   border: none;
   color: var(--text-tertiary);
   font-size: 0.875rem;
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-relaxed);
   padding: var(--space-xs) var(--space-sm);
   cursor: pointer;
   transition: all var(--transition-medium);
@@ -321,14 +369,14 @@ main {
   color: var(--text-primary);
 }
 
-/* FOOTER - Contextual actions */
+/* FOOTER - Contextual actions, not persistent */
 footer {
   padding: var(--space-lg) var(--space-md);
   display: flex;
   gap: var(--space-md);
   justify-content: center;
-  background: var(--bg-elevated);
-  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.03);
+  background: var(--bg-surface);  /* Same as content surface */
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.04);  /* Subtle separation */
 }
 
 footer button {
@@ -338,16 +386,17 @@ footer button {
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-relaxed);
   padding: var(--space-sm) var(--space-md);
   cursor: pointer;
-  transition: color var(--transition-medium);
-  letter-spacing: 0.01em;
+  transition: color var(--transition-slow);  /* Slow, settling */
 }
 
 footer button:hover {
   color: var(--text-primary);
 }
 
+/* Export button - Brass accent (used sparingly) */
 footer button:first-child {
   color: var(--accent-brass-dim);
 }
@@ -356,7 +405,7 @@ footer button:first-child:hover {
   color: var(--accent-brass);
 }
 
-/* SIDEBAR - List management */
+/* SIDEBAR - List management with material depth */
 .sidebar {
   position: fixed;
   top: 0;
@@ -364,10 +413,10 @@ footer button:first-child:hover {
   width: 100%;
   max-width: 360px;
   height: 100vh;
-  background: var(--bg-base);
-  box-shadow: var(--shadow-strong);
+  background: var(--bg-surface);  /* Content surface */
+  box-shadow: var(--shadow-active);  /* Strong elevation */
   transform: translateX(-100%);
-  transition: transform var(--transition-slow);
+  transition: transform var(--transition-slow);  /* Slow, settling */
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -382,14 +431,16 @@ footer button:first-child:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: var(--bg-surface);
 }
 
 .sidebar-header h2 {
   font-family: var(--font-serif);
   font-weight: var(--font-weight-normal);
-  font-size: 1.5rem;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
+  font-size: 1.75rem;  /* Editorial authority - large, dominant */
+  color: var(--text-dominant);  /* Brightest text */
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-tight);
 }
 
 .sidebar-header button {
@@ -414,24 +465,27 @@ footer button:first-child:hover {
   overflow-y: auto;
 }
 
-/* List items in sidebar */
+/* List items in sidebar - elevated rows */
 #lists-container li {
   position: relative;
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-sm);  /* Excessive spacing */
 }
 
 #lists-container li button {
   width: 100%;
-  background: none;
+  background: var(--bg-active);  /* Active row surface */
+  box-shadow: var(--shadow-surface);  /* Material elevation */
   border: none;
   text-align: left;
   padding: var(--space-md);
   font-family: var(--font-sans);
   font-size: 1.0625rem;
-  color: var(--text-primary);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-relaxed);
+  color: var(--text-primary);  /* Subordinate to header */
   cursor: pointer;
-  transition: all var(--transition-medium);
-  border-radius: 0;
+  transition: all var(--transition-slow);  /* Slow, settling */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -439,15 +493,20 @@ footer button:first-child:hover {
 }
 
 #lists-container li button:hover {
-  background: var(--bg-hover);
+  background: var(--bg-hover);  /* More elevated on hover */
+  box-shadow: var(--shadow-elevated);
+  transform: translateY(-1px);  /* Subtle lift */
 }
 
+/* Active list - brass accent (used sparingly) */
 #lists-container li.active button {
   color: var(--accent-brass);
-  background: var(--accent-brass-subtle);
+  background: rgba(166, 147, 111, 0.08);
+  box-shadow: var(--shadow-elevated);
+  border-left: 2px solid var(--accent-brass);  /* Minimal accent indicator */
 }
 
-/* Action buttons in list items */
+/* Action buttons - Progressive disclosure */
 #lists-container li .actions {
   display: flex;
   gap: var(--space-xs);
@@ -464,9 +523,18 @@ footer button:first-child:hover {
   padding: var(--space-xs);
   font-size: 0.875rem;
   background: none;
+  box-shadow: none;
+  color: var(--text-secondary);
 }
 
-/* New list button */
+#lists-container li .actions button:hover {
+  color: var(--text-primary);
+  background: none;
+  box-shadow: none;
+  transform: none;
+}
+
+/* New list button - brass accent */
 .new-list-btn {
   margin: var(--space-md);
   padding: var(--space-md);
@@ -476,31 +544,32 @@ footer button:first-child:hover {
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-relaxed);
   cursor: pointer;
-  transition: all var(--transition-medium);
+  transition: all var(--transition-slow);  /* Slow, settling */
   text-align: center;
 }
 
 .new-list-btn:hover {
   background: var(--accent-brass);
-  color: var(--bg-base);
+  color: var(--bg-canvas);  /* High contrast on hover */
 }
 
-/* MODAL - Export/Import */
+/* MODAL - Export/Import with material elevation */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.92);  /* Deep backdrop for modal depth */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--transition-slow);
+  transition: opacity var(--transition-slow);  /* Slow, settling */
 }
 
 .modal:not(.hidden) {
@@ -509,45 +578,54 @@ footer button:first-child:hover {
 }
 
 .modal-content {
-  background: var(--bg-surface);
+  background: var(--bg-active);  /* Active surface - elevated */
   padding: var(--space-xl) var(--space-lg);
   max-width: 90%;
   width: 440px;
-  box-shadow: var(--shadow-strong);
-  transform: translateY(20px);
-  transition: transform var(--transition-slow);
+  box-shadow: var(--shadow-hover);  /* Strong elevation */
+  transform: translateY(32px);  /* Start lower */
+  transition: transform var(--transition-slow);  /* Slow, settling */
 }
 
 .modal:not(.hidden) .modal-content {
-  transform: translateY(0);
+  transform: translateY(0);  /* Settle into place */
 }
 
 .modal-content h2 {
   font-family: var(--font-serif);
   font-weight: var(--font-weight-normal);
-  font-size: 1.5rem;
-  color: var(--text-primary);
+  font-size: 1.75rem;  /* Dominant */
+  color: var(--text-dominant);  /* Brightest */
   margin-bottom: var(--space-md);
-  letter-spacing: -0.01em;
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-tight);
 }
 
 .modal-content p {
   color: var(--text-secondary);
   margin-bottom: var(--space-md);
   font-size: 0.9375rem;
+  letter-spacing: var(--letter-spacing-relaxed);
+  line-height: var(--line-height-relaxed);
 }
 
 .modal-content input[type="text"] {
   width: 100%;
-  background: var(--bg-elevated);
+  background: var(--bg-surface);  /* Lower layer */
   border: none;
-  border-bottom: 1px solid var(--text-disabled);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding: var(--space-sm) 0;
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: 0.875rem;
+  letter-spacing: var(--letter-spacing-normal);
   margin-bottom: var(--space-md);
   outline: none;
+  transition: border-color var(--transition-medium);
+}
+
+.modal-content input[type="text"]:focus {
+  border-bottom-color: var(--accent-brass-dim);
 }
 
 #share-pin {
@@ -568,14 +646,16 @@ footer button:first-child:hover {
   padding: var(--space-md);
   font-family: var(--font-sans);
   font-size: 0.9375rem;
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-relaxed);
   cursor: pointer;
-  transition: all var(--transition-medium);
+  transition: all var(--transition-slow);  /* Slow, settling */
   margin-top: var(--space-md);
 }
 
 .modal-content button:hover {
   background: var(--accent-brass);
-  color: var(--bg-base);
+  color: var(--bg-canvas);  /* High contrast */
 }
 
 /* EMPTY STATE */
