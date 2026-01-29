@@ -274,7 +274,10 @@ main {
   align-items: center;
   gap: var(--space-md);
   cursor: pointer;
-  transition: all var(--transition-slow);  /* Slow, settling motion */
+  transition: background var(--transition-slow), 
+              box-shadow var(--transition-slow), 
+              transform var(--transition-slow), 
+              opacity var(--transition-slow);  /* Explicit properties for performance */
 }
 
 .shopping-item:hover {
@@ -302,13 +305,13 @@ main {
   /* No special treatment - all items have equal spacing */
 }
 
-/* Item checkbox - invisible by default (accessibility only) */
+/* Item checkbox - invisible by default (accessibility maintained) */
 .shopping-item input[type="checkbox"] {
   position: absolute;
   opacity: 0;
-  width: 0;
-  height: 0;
-  pointer-events: none;
+  width: 1px;  /* Keep minimal size for screen readers */
+  height: 1px;
+  /* pointer-events maintained for accessibility */
 }
 
 /* Custom checkbox indicator - subtle circle, no decoration */
@@ -337,7 +340,8 @@ main {
   color: var(--text-primary);  /* Subordinate luminance */
   letter-spacing: var(--letter-spacing-normal);
   line-height: var(--line-height-relaxed);  /* Calm scanning */
-  transition: all var(--transition-slow);
+  transition: color var(--transition-slow), 
+              opacity var(--transition-slow);  /* Explicit properties */
 }
 
 .shopping-item.completed span {
@@ -356,7 +360,8 @@ main {
   letter-spacing: var(--letter-spacing-relaxed);
   padding: var(--space-xs) var(--space-sm);
   cursor: pointer;
-  transition: all var(--transition-medium);
+  transition: opacity var(--transition-medium), 
+              color var(--transition-medium);  /* Explicit properties */
   pointer-events: none;
 }
 
@@ -485,7 +490,10 @@ footer button:first-child:hover {
   line-height: var(--line-height-relaxed);
   color: var(--text-primary);  /* Subordinate to header */
   cursor: pointer;
-  transition: all var(--transition-slow);  /* Slow, settling */
+  transition: background var(--transition-slow), 
+              box-shadow var(--transition-slow), 
+              transform var(--transition-slow), 
+              color var(--transition-slow);  /* Explicit properties */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -546,7 +554,8 @@ footer button:first-child:hover {
   font-weight: var(--font-weight-normal);
   letter-spacing: var(--letter-spacing-relaxed);
   cursor: pointer;
-  transition: all var(--transition-slow);  /* Slow, settling */
+  transition: background var(--transition-slow), 
+              color var(--transition-slow);  /* Explicit properties */
   text-align: center;
 }
 
@@ -649,7 +658,8 @@ footer button:first-child:hover {
   font-weight: var(--font-weight-normal);
   letter-spacing: var(--letter-spacing-relaxed);
   cursor: pointer;
-  transition: all var(--transition-slow);  /* Slow, settling */
+  transition: background var(--transition-slow), 
+              color var(--transition-slow);  /* Explicit properties */
   margin-top: var(--space-md);
 }
 
