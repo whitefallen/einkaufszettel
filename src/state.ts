@@ -21,8 +21,10 @@ export class StateManager {
   private doc: Y.Doc;
   private items: Y.Map<ShoppingItem>;
   private listeners: Set<() => void> = new Set();
+  private listId: string;
   
-  constructor() {
+  constructor(listId: string = 'default') {
+    this.listId = listId;
     this.doc = new Y.Doc();
     this.items = this.doc.getMap('items');
     
@@ -30,6 +32,13 @@ export class StateManager {
     this.doc.on('update', (update: Uint8Array) => {
       storeUpdate(update).catch(console.error);
     });
+  }
+  
+  /**
+   * Get the list ID for this state manager
+   */
+  getListId(): string {
+    return this.listId;
   }
   
   /**
@@ -147,13 +156,35 @@ export class StateManager {
 
 // Global state manager instance
 let stateManager: StateManager | null = null;
+let currentListId: string = 'default';
 
 /**
- * Get or create the global state manager
+ * Get or create the global state manager for a specific list
  */
-export function getStateManager(): StateManager {
-  if (!stateManager) {
-    stateManager = new StateManager();
+export function getStateManager(listId?: string): StateManager {
+  if (listId && listId !== currentListId) {
+    // Switching to a different list
+    currentListId = listId;
+    stateManager = new StateManager(listId);
+  } else if (!stateManager) {
+    stateManager = new StateManager(currentListId);
   }
+  return stateManager;
+}
+
+/**
+ * Get the current list ID
+ */
+export function getCurrentListId(): string {
+  return currentListId;
+}
+
+/**
+ * Switch to a different list
+ */
+export async function switchToList(listId: string): Promise<StateManager> {
+  currentListId = listId;
+  stateManager = new StateManager(listId);
+  await stateManager.restore();
   return stateManager;
 }

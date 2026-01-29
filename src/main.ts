@@ -3,7 +3,6 @@
  * Initializes all modules and sets up the PWA
  */
 import { initDB } from './storage';
-import { getStateManager } from './state';
 import { getSyncManager } from './sync';
 import { UIManager } from './ui';
 import { base64ToKey } from './crypto';
@@ -64,10 +63,28 @@ async function init(): Promise<void> {
     await initDB();
     console.log('Database initialized');
     
-    // Initialize state manager and restore from storage
-    const state = getStateManager();
-    await state.restore();
-    console.log('State restored');
+    // Get or create active list
+    const { getAllLists, getActiveListId, setActiveListId, createList } = await import('./storage');
+    let lists = await getAllLists();
+    
+    // If no lists exist, create default
+    if (lists.length === 0) {
+      const defaultList = await createList('Shopping List');
+      lists = [defaultList];
+      await setActiveListId(defaultList.id);
+    }
+    
+    // Get active list
+    let activeListId = await getActiveListId();
+    if (!activeListId || !lists.find(l => l.id === activeListId)) {
+      activeListId = lists[0].id;
+      await setActiveListId(activeListId);
+    }
+    
+    // Initialize state manager with active list and restore from storage
+    const { switchToList } = await import('./state');
+    await switchToList(activeListId);
+    console.log('State restored for list:', activeListId);
     
     // Check for shared room in URL
     const urlParams = new URLSearchParams(window.location.search);

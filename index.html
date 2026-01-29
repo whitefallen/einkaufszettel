@@ -18,9 +18,22 @@
   <link rel="stylesheet" href="/src/styles.css">
 </head>
 <body>
+  <!-- Sidebar for list management -->
+  <div id="sidebar" class="sidebar hidden">
+    <div class="sidebar-header">
+      <h2>My Lists</h2>
+      <button id="close-sidebar" aria-label="Close sidebar">✕</button>
+    </div>
+    <ul id="lists-container" role="list" aria-label="Shopping lists"></ul>
+    <button id="new-list-button" class="new-list-btn">+ New List</button>
+  </div>
+  
   <div id="app">
     <header role="banner">
-      <h1>🛒 Shopping List</h1>
+      <div class="header-left">
+        <button id="menu-button" aria-label="Open menu">☰</button>
+        <h1><span id="list-title">🛒 Shopping List</span></h1>
+      </div>
       <div id="sync-status" role="status" aria-live="polite"></div>
     </header>
     
