@@ -35,7 +35,7 @@ export class UIManager {
     const list = lists.find(l => l.id === currentListId);
     if (list) {
       const titleElement = document.getElementById('list-title')!;
-      titleElement.textContent = `🛒 ${list.name}`;
+      titleElement.textContent = list.name;
     }
   }
   
@@ -129,23 +129,28 @@ export class UIManager {
     const li = document.createElement('li');
     li.className = `shopping-item ${item.completed ? 'completed' : ''}`;
     
+    // Create hidden checkbox for accessibility
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    checkbox.className = 'item-checkbox';
     checkbox.checked = item.completed;
-    checkbox.addEventListener('change', () => {
-      getStateManager().toggleItem(item.id);
-    });
+    checkbox.setAttribute('aria-label', `Mark ${item.text} as ${item.completed ? 'incomplete' : 'complete'}`);
     
     const text = document.createElement('span');
-    text.className = 'item-text';
     text.textContent = item.text;
     
     const deleteButton = document.createElement('button');
-    deleteButton.className = 'item-delete';
-    deleteButton.textContent = 'Delete';
-    deleteButton.addEventListener('click', () => {
+    deleteButton.textContent = '×';
+    deleteButton.setAttribute('aria-label', `Delete ${item.text}`);
+    deleteButton.addEventListener('click', (e) => {
+      e.stopPropagation();
       getStateManager().deleteItem(item.id);
+    });
+    
+    // Tap entire item to toggle
+    li.addEventListener('click', (e) => {
+      if (e.target !== deleteButton) {
+        getStateManager().toggleItem(item.id);
+      }
     });
     
     li.appendChild(checkbox);
@@ -156,13 +161,13 @@ export class UIManager {
   }
   
   /**
-   * Update sync status display
+   * Update sync status display - invisible unless blocked
    */
   private updateSyncStatus(status: SyncStatus): void {
     const statusMap = {
-      offline: { text: '● Offline', class: 'offline-indicator' },
-      syncing: { text: '● Syncing...', class: 'syncing-indicator' },
-      synced: { text: '● Synced', class: 'synced-indicator' }
+      offline: { text: 'Offline', class: 'visible' },
+      syncing: { text: '', class: '' },
+      synced: { text: '', class: '' }
     };
     
     const { text, class: className } = statusMap[status];
@@ -215,7 +220,7 @@ export class UIManager {
   }
   
   /**
-   * Render all lists in sidebar
+   * Render all lists in sidebar - luxury minimal
    */
   private async renderLists(): Promise<void> {
     const lists = await getAllLists();
@@ -226,27 +231,27 @@ export class UIManager {
     
     lists.forEach(list => {
       const li = document.createElement('li');
-      li.className = `list-item ${list.id === currentListId ? 'active' : ''}`;
+      li.className = list.id === currentListId ? 'active' : '';
       
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'list-name';
-      nameSpan.textContent = list.name;
-      nameSpan.addEventListener('click', () => this.handleSwitchList(list.id));
+      const button = document.createElement('button');
+      button.textContent = list.name;
+      button.addEventListener('click', () => this.handleSwitchList(list.id));
       
+      // Show action buttons on hover via CSS
       const actions = document.createElement('div');
-      actions.className = 'list-actions';
+      actions.className = 'actions';
       
       const renameBtn = document.createElement('button');
-      renameBtn.textContent = '✏️';
-      renameBtn.title = 'Rename list';
+      renameBtn.textContent = 'Rename';
+      renameBtn.setAttribute('aria-label', `Rename ${list.name}`);
       renameBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         this.handleRenameList(list);
       });
       
       const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = '🗑️';
-      deleteBtn.title = 'Delete list';
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.setAttribute('aria-label', `Delete ${list.name}`);
       deleteBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         this.handleDeleteList(list);
@@ -255,7 +260,7 @@ export class UIManager {
       actions.appendChild(renameBtn);
       actions.appendChild(deleteBtn);
       
-      li.appendChild(nameSpan);
+      li.appendChild(button);
       li.appendChild(actions);
       container.appendChild(li);
     });
@@ -291,7 +296,7 @@ export class UIManager {
     const list = lists.find(l => l.id === listId);
     if (list) {
       const titleElement = document.getElementById('list-title')!;
-      titleElement.textContent = `🛒 ${list.name}`;
+      titleElement.textContent = list.name;
     }
     
     this.render();
@@ -311,7 +316,7 @@ export class UIManager {
       // Update title if it's the active list
       if (list.id === getCurrentListId()) {
         const titleElement = document.getElementById('list-title')!;
-        titleElement.textContent = `🛒 ${newName.trim()}`;
+        titleElement.textContent = newName.trim();
       }
     }
   }

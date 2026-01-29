@@ -9,31 +9,29 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   
-  <!-- Modern Fonts: Inter + Roboto -->
+  <!-- Luxury Typography: Playfair Display (serif) + Inter (sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@400&display=swap" rel="stylesheet">
   
   <title>Einkaufszettel</title>
   <link rel="stylesheet" href="/src/styles.css">
 </head>
 <body>
-  <!-- Sidebar for list management -->
+  <!-- Sidebar for list management - luxury minimal -->
   <div id="sidebar" class="sidebar hidden">
     <div class="sidebar-header">
-      <h2>My Lists</h2>
-      <button id="close-sidebar" aria-label="Close sidebar">✕</button>
+      <h2>Lists</h2>
+      <button id="close-sidebar" aria-label="Close sidebar">×</button>
     </div>
     <ul id="lists-container" role="list" aria-label="Shopping lists"></ul>
-    <button id="new-list-button" class="new-list-btn">+ New List</button>
+    <button id="new-list-button" class="new-list-btn">New List</button>
   </div>
   
   <div id="app">
     <header role="banner">
-      <div class="header-left">
-        <button id="menu-button" aria-label="Open menu">☰</button>
-        <h1><span id="list-title">🛒 Shopping List</span></h1>
-      </div>
+      <button id="menu-button" aria-label="Open menu" class="menu-btn">≡</button>
+      <h1><span id="list-title">Shopping List</span></h1>
       <div id="sync-status" role="status" aria-live="polite"></div>
     </header>
     
@@ -56,20 +54,16 @@
     </main>
     
     <footer role="contentinfo">
-      <button id="share-button" aria-label="Share shopping list">
-        📤 Share
-      </button>
-      <button id="clear-completed" aria-label="Clear completed items">
-        Clear Done
-      </button>
+      <button id="share-button" aria-label="Export list">Export list</button>
+      <button id="clear-completed" aria-label="Clear completed items">Clear completed</button>
     </footer>
     
     <div id="share-modal" class="modal hidden" role="dialog" aria-labelledby="modal-title" aria-modal="true">
       <div class="modal-content">
-        <h2 id="modal-title">Share Shopping List</h2>
-        <p>Share this link or PIN with others:</p>
-        <input type="text" id="share-link" readonly aria-label="Share link">
-        <div id="share-pin" aria-label="Share PIN"></div>
+        <h2 id="modal-title">Export List</h2>
+        <p>Share this link:</p>
+        <input type="text" id="share-link" readonly aria-label="Export link">
+        <div id="share-pin" aria-label="Export code"></div>
         <button id="close-modal">Close</button>
       </div>
     </div>
