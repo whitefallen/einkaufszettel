@@ -4,40 +4,59 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Offline-first shopping list with encrypted sync">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#1976D2">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  <!-- Material Design: Roboto Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
   <title>Einkaufszettel</title>
   <link rel="stylesheet" href="/src/styles.css">
 </head>
 <body>
   <div id="app">
-    <header>
-      <h1>Shopping List</h1>
-      <div id="sync-status"></div>
+    <header role="banner">
+      <h1>🛒 Shopping List</h1>
+      <div id="sync-status" role="status" aria-live="polite"></div>
     </header>
     
-    <main>
-      <div id="add-item-form">
-        <input type="text" id="item-input" placeholder="Add item..." autocomplete="off">
-        <button id="add-button">Add</button>
+    <main role="main">
+      <div id="add-item-form" role="form">
+        <input 
+          type="text" 
+          id="item-input" 
+          placeholder="Add item..." 
+          autocomplete="off"
+          aria-label="Add new shopping item">
+        <button 
+          id="add-button" 
+          aria-label="Add item"
+          title="Add item">
+        </button>
       </div>
       
-      <ul id="shopping-list"></ul>
+      <ul id="shopping-list" role="list" aria-label="Shopping items"></ul>
     </main>
     
-    <footer>
-      <button id="share-button">Share List</button>
-      <button id="clear-completed">Clear Completed</button>
+    <footer role="contentinfo">
+      <button id="share-button" aria-label="Share shopping list">
+        📤 Share
+      </button>
+      <button id="clear-completed" aria-label="Clear completed items">
+        Clear Done
+      </button>
     </footer>
     
-    <div id="share-modal" class="modal hidden">
+    <div id="share-modal" class="modal hidden" role="dialog" aria-labelledby="modal-title" aria-modal="true">
       <div class="modal-content">
-        <h2>Share Shopping List</h2>
+        <h2 id="modal-title">Share Shopping List</h2>
         <p>Share this link or PIN with others:</p>
-        <input type="text" id="share-link" readonly>
-        <div id="share-pin"></div>
+        <input type="text" id="share-link" readonly aria-label="Share link">
+        <div id="share-pin" aria-label="Share PIN"></div>
         <button id="close-modal">Close</button>
       </div>
     </div>
