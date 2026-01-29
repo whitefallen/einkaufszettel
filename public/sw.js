@@ -6,33 +6,15 @@
 const CACHE_NAME = 'shopping-list-v1';
 const RUNTIME_CACHE = 'runtime-cache-v1';
 
-// Files to cache immediately
-const PRECACHE_FILES = [
-  '/',
-  '/index.html',
-  '/src/main.ts',
-  '/src/styles.css',
-  '/src/state.ts',
-  '/src/storage.ts',
-  '/src/sync.ts',
-  '/src/crypto.ts',
-  '/src/ui.ts'
-];
+// Note: Precache is handled by Vite PWA plugin
+// This service worker will be replaced by the generated one during build
 
 /**
- * Install event - cache static assets
+ * Install event - cache handled by Vite PWA plugin
  */
 self.addEventListener('install', (event) => {
   console.log('Service Worker installing...');
-  
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('Caching static assets');
-        return cache.addAll(PRECACHE_FILES);
-      })
-      .then(() => self.skipWaiting())
-  );
+  self.skipWaiting();
 });
 
 /**

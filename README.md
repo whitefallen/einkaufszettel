@@ -76,6 +76,12 @@ npm install
 cd server && npm install && cd ..
 ```
 
+3. Configure environment (optional):
+```bash
+cp .env.example .env
+# Edit .env to set your WebSocket server URL for production
+```
+
 ### Development
 
 1. Start the relay server:
@@ -107,10 +113,23 @@ cd server
 PORT=3000 node index.js
 ```
 
-For production, update the WebSocket URL in `src/sync.ts`:
-```typescript
-const sync = new SyncManager('wss://your-server.com');
+**Production Deployment**:
+
+1. Deploy the server to your hosting provider (Railway, Render, Fly.io)
+2. Note your server's WebSocket URL (e.g., `wss://your-server.com`)
+3. Update the client configuration:
+
+```bash
+# In the project root, create or edit .env
+echo "VITE_WS_URL=wss://your-server.com" > .env
 ```
+
+4. Rebuild the client:
+```bash
+npm run build
+```
+
+The client will now connect to your production WebSocket server.
 
 ## Usage
 

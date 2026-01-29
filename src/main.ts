@@ -126,7 +126,8 @@ if (document.readyState === 'loading') {
 // Handle online/offline events
 window.addEventListener('online', () => {
   console.log('Network online');
-  getSyncManager().init();
+  // Reconnection is handled automatically by SyncManager
+  getSyncManager().syncState();
 });
 
 window.addEventListener('offline', () => {

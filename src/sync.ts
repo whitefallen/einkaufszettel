@@ -8,6 +8,16 @@ import { getMetadata, setMetadata } from './storage';
 
 export type SyncStatus = 'offline' | 'syncing' | 'synced';
 
+// Get WebSocket URL from environment or default to localhost
+const getServerUrl = (): string => {
+  // Check for build-time environment variable
+  if (import.meta.env.VITE_WS_URL) {
+    return import.meta.env.VITE_WS_URL as string;
+  }
+  // Default to localhost in development
+  return 'ws://localhost:3000';
+};
+
 /**
  * Sync manager handles network synchronization
  */
@@ -18,10 +28,12 @@ export class SyncManager {
   private roomKey: Uint8Array | null = null;
   private roomId: string | null = null;
   private reconnectTimeout: number | null = null;
+  private reconnectAttempts = 0;
+  private maxReconnectDelay = 60000; // 60 seconds
   private serverUrl: string;
   
-  constructor(serverUrl = 'ws://localhost:3000') {
-    this.serverUrl = serverUrl;
+  constructor(serverUrl?: string) {
+    this.serverUrl = serverUrl || getServerUrl();
   }
   
   /**
@@ -65,6 +77,7 @@ export class SyncManager {
       
       this.ws.onopen = () => {
         console.log('Connected to sync server');
+        this.resetReconnectAttempts();
         this.updateStatus('synced');
         
         // Join room
@@ -101,15 +114,26 @@ export class SyncManager {
   }
   
   /**
-   * Schedule reconnection attempt
+   * Schedule reconnection attempt with exponential backoff
    */
   private scheduleReconnect(): void {
     if (this.reconnectTimeout) return;
     
+    // Exponential backoff: 1s, 2s, 4s, 8s, ..., up to 60s
+    const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), this.maxReconnectDelay);
+    this.reconnectAttempts++;
+    
     this.reconnectTimeout = window.setTimeout(() => {
       this.reconnectTimeout = null;
       this.connect();
-    }, 5000);
+    }, delay);
+  }
+  
+  /**
+   * Reset reconnection attempts on successful connection
+   */
+  private resetReconnectAttempts(): void {
+    this.reconnectAttempts = 0;
   }
   
   /**

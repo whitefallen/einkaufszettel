@@ -62,11 +62,10 @@ export async function storeUpdate(update: Uint8Array, encrypted = true): Promise
   try {
     const database = await initDB();
     await database.add('updates', {
-      id: Date.now(),
       timestamp: Date.now(),
       update,
       encrypted
-    });
+    } as any); // id will be auto-generated
   } catch (error) {
     // Silently fail if IndexedDB is not available (e.g., in tests)
     console.warn('Failed to store update:', error);

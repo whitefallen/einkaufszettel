@@ -114,8 +114,9 @@ class RelayServer {
       payload
     });
     
+    const { OPEN } = sender.constructor;
     room.forEach((client) => {
-      if (client !== sender && client.readyState === 1) { // 1 = OPEN
+      if (client !== sender && client.readyState === OPEN) {
         client.send(message);
       }
     });
