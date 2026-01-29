@@ -3,7 +3,7 @@
  * All data stored and transmitted is encrypted
  */
 import nacl from 'tweetnacl';
-import { encodeBase64, decodeBase64, encodeUTF8, decodeUTF8 } from 'tweetnacl-util';
+import * as util from 'tweetnacl-util';
 
 export interface EncryptedData {
   nonce: string;
@@ -34,12 +34,12 @@ export function generateSymmetricKey(): Uint8Array {
  */
 export function encryptSymmetric(data: string, key: Uint8Array): EncryptedData {
   const nonce = nacl.randomBytes(nacl.secretbox.nonceLength);
-  const messageUint8 = encodeUTF8(data);
+  const messageUint8 = util.decodeUTF8(data);
   const ciphertext = nacl.secretbox(messageUint8, nonce, key);
   
   return {
-    nonce: encodeBase64(nonce),
-    ciphertext: encodeBase64(ciphertext)
+    nonce: util.encodeBase64(nonce),
+    ciphertext: util.encodeBase64(ciphertext)
   };
 }
 
@@ -47,15 +47,15 @@ export function encryptSymmetric(data: string, key: Uint8Array): EncryptedData {
  * Decrypt data with a symmetric key
  */
 export function decryptSymmetric(encrypted: EncryptedData, key: Uint8Array): string | null {
-  const nonce = decodeBase64(encrypted.nonce);
-  const ciphertext = decodeBase64(encrypted.ciphertext);
+  const nonce = util.decodeBase64(encrypted.nonce);
+  const ciphertext = util.decodeBase64(encrypted.ciphertext);
   const decrypted = nacl.secretbox.open(ciphertext, nonce, key);
   
   if (!decrypted) {
     return null;
   }
   
-  return decodeUTF8(decrypted);
+  return util.encodeUTF8(decrypted);
 }
 
 /**
@@ -67,12 +67,12 @@ export function encryptAsymmetric(
   senderSecretKey: Uint8Array
 ): EncryptedData {
   const nonce = nacl.randomBytes(nacl.box.nonceLength);
-  const messageUint8 = encodeUTF8(data);
+  const messageUint8 = util.decodeUTF8(data);
   const ciphertext = nacl.box(messageUint8, nonce, recipientPublicKey, senderSecretKey);
   
   return {
-    nonce: encodeBase64(nonce),
-    ciphertext: encodeBase64(ciphertext)
+    nonce: util.encodeBase64(nonce),
+    ciphertext: util.encodeBase64(ciphertext)
   };
 }
 
@@ -84,29 +84,29 @@ export function decryptAsymmetric(
   senderPublicKey: Uint8Array,
   recipientSecretKey: Uint8Array
 ): string | null {
-  const nonce = decodeBase64(encrypted.nonce);
-  const ciphertext = decodeBase64(encrypted.ciphertext);
+  const nonce = util.decodeBase64(encrypted.nonce);
+  const ciphertext = util.decodeBase64(encrypted.ciphertext);
   const decrypted = nacl.box.open(ciphertext, nonce, senderPublicKey, recipientSecretKey);
   
   if (!decrypted) {
     return null;
   }
   
-  return decodeUTF8(decrypted);
+  return util.encodeUTF8(decrypted);
 }
 
 /**
  * Convert key to base64 for storage/transmission
  */
 export function keyToBase64(key: Uint8Array): string {
-  return encodeBase64(key);
+  return util.encodeBase64(key);
 }
 
 /**
  * Convert base64 string back to key
  */
 export function base64ToKey(encoded: string): Uint8Array {
-  return decodeBase64(encoded);
+  return util.decodeBase64(encoded);
 }
 
 /**
@@ -130,6 +130,6 @@ export function generatePIN(): string {
  */
 export function deriveKeyFromPIN(pin: string, salt: Uint8Array): Uint8Array {
   // Simple hash-based derivation (for demonstration)
-  const combined = encodeUTF8(pin + encodeBase64(salt));
+  const combined = util.decodeUTF8(pin + util.encodeBase64(salt));
   return nacl.hash(combined).slice(0, nacl.secretbox.keyLength);
 }

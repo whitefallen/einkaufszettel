@@ -97,12 +97,15 @@ async function init(): Promise<void> {
     await requestNotificationPermission();
     
     // Set up background sync for Android
-    if ('sync' in registration) {
-      try {
-        await (registration as any).sync.register('sync-shopping-list');
-        console.log('Background sync registered');
-      } catch (error) {
-        console.error('Background sync registration failed:', error);
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      const reg = await navigator.serviceWorker.ready;
+      if ('sync' in reg) {
+        try {
+          await (reg as any).sync.register('sync-shopping-list');
+          console.log('Background sync registered');
+        } catch (error) {
+          console.error('Background sync registration failed:', error);
+        }
       }
     }
     
