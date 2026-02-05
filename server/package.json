@@ -1,0 +1,13 @@
+{
+  "name": "einkaufszettel-server",
+  "version": "0.1.0",
+  "description": "Minimal relay server for encrypted message passing",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}
